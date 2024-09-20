@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: serviceA-develop
+  namespace: argo-cd
+spec:
+  project: <project_name>-develop
+  source:
+    path: ns-a/helm/
+    repoURL: git@gitlab.com:<project_name>/dev-portal/gitops.git
+    targetRevision: HEAD
+    helm:
+      releaseName: ns-a-serviceA-develop
+      valueFiles:
+        - ../develop/helm-values/serviceA-values.yml
+  destination:
+    name: nutx-develop
+    namespace: ns-a
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
