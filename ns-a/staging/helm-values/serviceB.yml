@@ -1,0 +1,93 @@
+deployment:
+  name: service-A
+  image: asia-southeast1-docker.pkg.dev/<image_url>
+  tag: develop-1212312121
+  gcpSecret:
+    enabled: false
+  dep:
+      - deployment:
+        subName: "-api"
+        namespace: ns-a
+        replicas: 1
+        port: 8080
+        nodeSelector: compute-1
+        resource:
+          cpuRequest: 150m
+          memoryRequest: 300Mi
+          cpuLimit: "300m"
+          memoryLimit: 500Mi
+        ingress:
+          - name: account
+            host: dev-ns-a-gateway.nutx.dev
+            path: /cat-management
+            kongPlugin: kong-jwt,cors-global-plugin,prometheus-kong
+            tlsSecret: ""
+        volumes:
+          GCLOUD:
+            name: ""
+            mountPath: ""
+            secretName: ""
+          EXPRESS_CREDIT_KEY: 
+            name: ""
+            mountPath: ""
+            secretName: ""
+        extraEnv:
+          APP_ENV: beta
+          GOOGLE_APPLICATION_CREDENTIALS: ""
+          EXPRESS_CREDIT_PUBLIC_KEY: ""
+          OAUTH_PINMALL_PUBLIC_KEY: ""
+          REDIS_DATABASE: "3"
+          SUB_DOMAIN: ""
+          DOMAIN: nutx.dev
+          GC_PROJECT_ID: ""
+          GC_LOCATION_ID: ""
+          GC_KEY_RING_ID: ""
+          GC_KEY_ID: ""
+          BUCKET: ""
+          VERIFY_TOKEN_KEY: "000"
+          MODE: 'API'
+          FORGOT_PASSWORD_PREFIX: ""
+        configMapRef:
+          MONGODB_OPTIONS:
+            configMapName: ""
+            configMapKey: ""
+          MONGODB_OPTIONS_ATLAS_ORDER:
+            configMapName: ""
+            configMapKey: ""
+          REDIS_HOST:
+            configMapName: ""
+            configMapKey: ""
+          REDIS_PORT:
+            configMapName: ""
+            configMapKey: ""
+          FEED_CHAT_TOPIC:
+            configMapName: ""
+            configMapKey: ""
+          EVENT_BUS_TOPIC_SOCIAL_NETWORK:
+            configMapName: ""
+            configMapKey: ""
+          SUBSCRIPTION_NOTIFICATION_CREATE:
+            configMapName: ""
+            configMapKey: ""
+          EVENT_BUS_TOPIC_TRANSFER_SHOP:
+            configMapName: ""
+            configMapKey: ""
+        extraEnvSecret:
+          JWT_KEY:
+            secretName: ""
+            secretKey: ""
+          JWT_SECRET:
+            secretName: ""
+            secretKey: ""
+          EMAIL_USER:
+            secretName: ""
+            secretKey: ""
+          MONGODB_HOST:
+            secretName: ""
+            secretKey: ""
+          LINE_NOTIFY_CLIENT_SECRET:
+            secretName: ""
+            secretKey: ""
+          MONGODB_HOST_ATLAS_ORDER:
+            secretName: ""
+            secretKey: ""
